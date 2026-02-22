@@ -1,0 +1,452 @@
+<!-- 
+    HYPER-LOCAL FOOD RESCUE - AI CHATBOT WIDGET
+    This is a reusable chatbot component that can be added to any page.
+    All CSS and JavaScript are included inline for guaranteed functionality.
+-->
+
+<style>
+/* Chatbot Widget Styles */
+.chatbot-widget {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    z-index: 9999;
+}
+
+.chatbot-toggle-btn {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.4);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chatbot-toggle-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(46, 204, 113, 0.6);
+}
+
+.chatbot-toggle-btn.active {
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+}
+
+.chatbot-window {
+    position: absolute;
+    bottom: 85px;
+    right: 0;
+    width: 380px;
+    max-height: 600px;
+    background: #ffffff;
+    border: 1px solid #e6e9ee;
+    border-radius: 12px;
+    box-shadow: 0 5px 40px rgba(0, 0, 0, 0.16);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideUp 0.3s ease-out;
+}
+
+.chatbot-window.active {
+    display: flex;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.chatbot-header {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: white;
+    padding: 20px;
+    font-weight: bold;
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    letter-spacing: 0.2px;
+}
+
+.chatbot-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.chatbot-close:hover {
+    transform: scale(1.2);
+}
+
+.chatbot-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+    background-color: #f9f9f9;
+    max-height: 320px;
+}
+
+.message {
+    margin-bottom: 12px;
+    display: flex;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message.bot {
+    justify-content: flex-start;
+}
+
+.message.user {
+    justify-content: flex-end;
+}
+
+.message-bubble {
+    max-width: 70%;
+    padding: 10px 15px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+.message.bot .message-bubble {
+    background-color: #e8f5e9;
+    color: #2c3e50;
+    border-bottom-left-radius: 0;
+}
+
+.message.user .message-bubble {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: white;
+    border-bottom-right-radius: 0;
+}
+
+.typing-indicator {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    padding: 10px 15px;
+}
+
+.typing-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #2ecc71;
+    animation: typing 1.4s infinite;
+}
+
+.typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing {
+    0%, 60%, 100% {
+        transform: translateY(0);
+        opacity: 0.7;
+    }
+    30% {
+        transform: translateY(-10px);
+        opacity: 1;
+    }
+}
+
+.quick-questions {
+    padding: 15px;
+    background-color: #f3f6f9;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.quick-question-btn {
+    padding: 10px 12px;
+    background-color: white;
+    border: 1px solid #bdc3c7;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    color: #2c3e50;
+    transition: all 0.3s ease;
+    text-align: left;
+    line-height: 1.3;
+}
+
+.quick-question-btn:hover {
+    background-color: #e8f5e9;
+    border-color: #2ecc71;
+    color: #2ecc71;
+}
+
+.chatbot-input-area {
+    padding: 15px;
+    border-top: 1px solid #e6e9ee;
+    background-color: #ffffff;
+    display: flex;
+    gap: 8px;
+}
+
+.chatbot-input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid #bdc3c7;
+    border-radius: 20px;
+    font-size: 13px;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+    background-color: #ffffff;
+}
+
+.chatbot-input:focus {
+    outline: none;
+    border-color: #2ecc71;
+    box-shadow: 0 0 8px rgba(46, 204, 113, 0.2);
+}
+
+.chatbot-send-btn {
+    width: 36px;
+    height: 36px;
+    background-color: #2ecc71;
+    border: none;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
+}
+
+.chatbot-send-btn:hover {
+    background-color: #27ae60;
+    transform: scale(1.05);
+}
+
+.chatbot-send-btn:active {
+    transform: scale(0.95);
+}
+
+@media (max-width: 480px) {
+    .chatbot-window {
+        width: 90vw;
+        max-height: 70vh;
+        max-width: 380px;
+    }
+}
+</style>
+
+<!-- Chatbot HTML -->
+<div class="chatbot-widget">
+    <button class="chatbot-toggle-btn" id="chatbot-toggle" onclick="toggleChatbot()">💬</button>
+    
+    <div class="chatbot-window" id="chatbot-window">
+        <div class="chatbot-header">
+            🤖 Smart Food Assistant
+            <button class="chatbot-close" onclick="closeChatbot()">✕</button>
+        </div>
+        
+        <div class="chatbot-messages" id="chatbot-messages">
+            <div class="message bot">
+                <div class="message-bubble">
+                    Hi there! 👋 I'm your Smart Food Assistant. Here are some quick questions you can ask:
+                </div>
+            </div>
+        </div>
+        
+        <div class="quick-questions" id="quick-questions">
+            <button class="quick-question-btn" onclick="handleQuickQuestion('How can I donate food?')">How can I donate food?</button>
+            <button class="quick-question-btn" onclick="handleQuickQuestion('How do I find food near me?')">How do I find food near me?</button>
+            <button class="quick-question-btn" onclick="handleQuickQuestion('What are the food safety rules?')">What are the food safety rules?</button>
+            <button class="quick-question-btn" onclick="handleQuickQuestion('How does the app work?')">How does the app work?</button>
+            <button class="quick-question-btn" onclick="handleQuickQuestion('Is it really free?')">Is it really free?</button>
+        </div>
+        
+        <div class="chatbot-input-area">
+            <input type="text" class="chatbot-input" id="chatbot-input" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+            <button class="chatbot-send-btn" onclick="sendMessage()">➤</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// Pre-defined smart responses
+const aiResponses = {
+    'How can I donate food?': 'Great question! 🍎 To donate food:\n1. Click "List Food" from the menu\n2. Fill in food details (type, quantity, pickup time)\n3. Save and share with the community\n4. Track your donations and earn badges!',
+
+    'How do I find food near me?': 'Easy! 📍 Just:\n1. Go to "Browse Food"\n2. Use the search bar or Quick Filters\n3. Filter by distance, food type, or ratings\n4. Click "Claim Food" and message the donor\n5. Arrange pickup at a convenient time!',
+
+    'What are the food safety rules?': 'Safety first! ✅ Always:\n• Check expiration dates\n• Inspect for damage or contamination\n• Store perishables immediately\n• Follow food handling procedures\n• Ask donors about storage details\n• Trust verified donors with high ratings',
+
+    'How does the app work?': 'Our platform is simple! 🌟\n• Donors list surplus food\n• Community members find and claim items\n• Direct messaging for coordination\n• Track donations and earn badges\n• Build community trust together',
+
+    'Is it really free?': 'Yes! 100% free! 🎉\n• No hidden fees\n• No membership costs\n• No delivery charges\n• Free for donating and claiming\n• Completely community-driven\nJust giving and sharing food!',
+
+    'default': 'That\'s a great question! 💚 Our team is always working to improve the platform. For more detailed information, please visit our FAQ page or contact our support team. How else can I help you?'
+};
+
+let isTyping = false;
+
+function toggleChatbot() {
+    const windowEl = document.getElementById('chatbot-window');
+    const toggleBtn = document.getElementById('chatbot-toggle');
+
+    if (!windowEl || !toggleBtn) {
+        return;
+    }
+
+    windowEl.classList.toggle('active');
+    toggleBtn.classList.toggle('active');
+
+    if (windowEl.classList.contains('active')) {
+        const input = document.getElementById('chatbot-input');
+        if (input) {
+            input.focus();
+        }
+    }
+}
+
+function closeChatbot() {
+    const windowEl = document.getElementById('chatbot-window');
+    const toggleBtn = document.getElementById('chatbot-toggle');
+
+    if (!windowEl || !toggleBtn) {
+        return;
+    }
+
+    windowEl.classList.remove('active');
+    toggleBtn.classList.remove('active');
+}
+
+function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+        sendMessage();
+    }
+}
+
+function handleQuickQuestion(question) {
+    displayUserMessage(question);
+    showTypingAnimation();
+
+    setTimeout(() => {
+        removeTypingAnimation();
+        const response = aiResponses[question] || aiResponses['default'];
+        displayBotMessage(response);
+        scrollToBottom();
+    }, 1500);
+}
+
+function sendMessage() {
+    const input = document.getElementById('chatbot-input');
+    const message = input ? input.value.trim() : '';
+
+    if (!message || isTyping) {
+        return;
+    }
+
+    displayUserMessage(message);
+    if (input) {
+        input.value = '';
+    }
+
+    showTypingAnimation();
+
+    setTimeout(() => {
+        removeTypingAnimation();
+        const response = aiResponses['default'];
+        displayBotMessage(response);
+        scrollToBottom();
+    }, 1500);
+}
+
+function displayUserMessage(text) {
+    const messagesContainer = document.getElementById('chatbot-messages');
+    if (!messagesContainer) {
+        return;
+    }
+
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message user';
+    messageDiv.innerHTML = `<div class="message-bubble">${text}</div>`;
+    messagesContainer.appendChild(messageDiv);
+    scrollToBottom();
+}
+
+function displayBotMessage(text) {
+    const messagesContainer = document.getElementById('chatbot-messages');
+    if (!messagesContainer) {
+        return;
+    }
+
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message bot';
+    messageDiv.innerHTML = `<div class="message-bubble">${text}</div>`;
+    messagesContainer.appendChild(messageDiv);
+    scrollToBottom();
+}
+
+function showTypingAnimation() {
+    isTyping = true;
+    const messagesContainer = document.getElementById('chatbot-messages');
+    if (!messagesContainer) {
+        return;
+    }
+
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'message bot';
+    typingDiv.id = 'typing-animation';
+    typingDiv.innerHTML = '<div class="typing-indicator"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>';
+    messagesContainer.appendChild(typingDiv);
+    scrollToBottom();
+}
+
+function removeTypingAnimation() {
+    isTyping = false;
+    const typingDiv = document.getElementById('typing-animation');
+    if (typingDiv) {
+        typingDiv.remove();
+    }
+}
+
+function scrollToBottom() {
+    const messagesContainer = document.getElementById('chatbot-messages');
+    if (messagesContainer) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+}
+</script>
+

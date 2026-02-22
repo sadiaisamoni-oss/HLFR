@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block title %}My Donations - Hyper-Local Food Rescue{% endblock %}
+
+{% block content %}
+<section class="card shadow-sm mb-4">
+    <div class="card-body">
+        <div class="d-flex flex-column flex-md-row align-items-md-center gap-4">
+            <div class="rounded-circle bg-success text-white d-inline-flex align-items-center justify-content-center p-4">
+                <span class="fs-1">🍎</span>
+            </div>
+            <div class="flex-grow-1">
+                <h1 class="h4 fw-bold mb-1">My Donations</h1>
+                <div class="text-muted">Track your active listings and completed rescues.</div>
+                <div class="text-muted small">Keep your listings up to date for faster pickups.</div>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+                <a class="btn btn-success" href="{% url 'list_food' %}">New Listing</a>
+                <a class="btn btn-outline-secondary" href="{% url 'profile' %}">View Profile</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="row g-3 mb-4">
+    <div class="col-sm-6 col-lg-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-body text-center">
+                <div class="text-uppercase text-muted small">Active Listings</div>
+                <div class="display-6 fw-bold text-success">3</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-body text-center">
+                <div class="text-uppercase text-muted small">Completed</div>
+                <div class="display-6 fw-bold text-success">12</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-body text-center">
+                <div class="text-uppercase text-muted small">Upcoming Pickups</div>
+                <div class="display-6 fw-bold text-success">2</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-body text-center">
+                <div class="text-uppercase text-muted small">Average Rating</div>
+                <div class="display-6 fw-bold text-success">4.9</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="card shadow-sm mb-4">
+    <div class="card-body">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+            <h2 class="h5 fw-semibold mb-0">Active Listings</h2>
+            <a class="btn btn-sm btn-outline-success" href="{% url 'available' %}">View Public Listings</a>
+        </div>
+        <div class="row g-3 mt-2">
+            <div class="col-lg-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <span class="badge text-bg-success">Active</span>
+                        <h3 class="h6 fw-semibold mt-2">Fresh Vegetables</h3>
+                        <div class="text-muted small">Pickup: Today 4-6 PM</div>
+                        <div class="text-muted small">Quantity: 10 lbs</div>
+                        <div class="d-flex gap-2 mt-3">
+                            <button class="btn btn-outline-secondary btn-sm" type="button">Edit</button>
+                            <button class="btn btn-outline-danger btn-sm" type="button">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <span class="badge text-bg-warning">Pending</span>
+                        <h3 class="h6 fw-semibold mt-2">Bakery Boxes</h3>
+                        <div class="text-muted small">Pickup: Tomorrow 9-11 AM</div>
+                        <div class="text-muted small">Quantity: 6 boxes</div>
+                        <div class="d-flex gap-2 mt-3">
+                            <button class="btn btn-outline-secondary btn-sm" type="button">Edit</button>
+                            <button class="btn btn-outline-danger btn-sm" type="button">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <span class="badge text-bg-success">Active</span>
+                        <h3 class="h6 fw-semibold mt-2">Prepared Meals</h3>
+                        <div class="text-muted small">Pickup: Today 6-7 PM</div>
+                        <div class="text-muted small">Quantity: 12 meals</div>
+                        <div class="d-flex gap-2 mt-3">
+                            <button class="btn btn-outline-secondary btn-sm" type="button">Edit</button>
+                            <button class="btn btn-outline-danger btn-sm" type="button">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="card shadow-sm">
+    <div class="card-body">
+        <h2 class="h5 fw-semibold">Quick Actions</h2>
+        <div class="row g-3 mt-2">
+            <div class="col-md-4">
+                <a class="btn btn-outline-success w-100" href="{% url 'list_food' %}">List New Food</a>
+            </div>
+            <div class="col-md-4">
+                <a class="btn btn-outline-success w-100" href="{% url 'available' %}">Browse Community</a>
+            </div>
+            <div class="col-md-4">
+                <a class="btn btn-outline-success w-100" href="{% url 'profile' %}">Update Profile</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

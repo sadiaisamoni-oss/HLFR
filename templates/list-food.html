@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}List Food - Hyper-Local Food Rescue{% endblock %}
+
+{% block content %}
+<section class="p-4 bg-success text-white rounded-3 mb-4">
+    <h1 class="h3 fw-bold mb-1">Donate Your Surplus Food</h1>
+    <p class="mb-0">Help reduce waste while supporting your community.</p>
+</section>
+
+<section class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h2 class="h5 fw-semibold mb-3">Post food for rescue</h2>
+        <form class="row g-3">
+            <div class="col-12">
+                <label class="form-label" for="foodName">Food name</label>
+                <input class="form-control" type="text" id="foodName" name="foodName" placeholder="Fresh vegetables, baked bread" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label" for="category">Category</label>
+                <select class="form-select" id="category" name="category" required>
+                    <option value="">Select a category</option>
+                    <option value="produce">Fresh Produce</option>
+                    <option value="bakery">Bakery</option>
+                    <option value="prepared">Prepared Meals</option>
+                    <option value="dairy">Dairy and Eggs</option>
+                    <option value="packaged">Packaged Items</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label" for="quantity">Quantity</label>
+                <input class="form-control" type="text" id="quantity" name="quantity" placeholder="e.g., 5 lbs, 8 loaves" required>
+            </div>
+            <div class="col-12">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="3" placeholder="Include ingredients, preparation method, and packaging." required></textarea>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label" for="expiryDate">Use-by date</label>
+                <input class="form-control" type="date" id="expiryDate" name="expiryDate" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label" for="packingDate">Prepared/received date</label>
+                <input class="form-control" type="date" id="packingDate" name="packingDate" required>
+            </div>
+            <div class="col-12">
+                <label class="form-label" for="location">Pickup location</label>
+                <input class="form-control" type="text" id="location" name="location" placeholder="Address or landmark" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label" for="pickupDate">Pickup date</label>
+                <input class="form-control" type="date" id="pickupDate" name="pickupDate" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label" for="pickupTime">Pickup time window</label>
+                <input class="form-control" type="text" id="pickupTime" name="pickupTime" placeholder="e.g., 2-4 PM" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label" for="contactPhone">Contact phone</label>
+                <input class="form-control" type="tel" id="contactPhone" name="contactPhone" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label" for="contactEmail">Contact email</label>
+                <input class="form-control" type="email" id="contactEmail" name="contactEmail" required>
+            </div>
+            <div class="col-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="verified" name="verified">
+                    <label class="form-check-label" for="verified">I confirm the food is safe and properly stored.</label>
+                </div>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-success" type="submit">Submit listing</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<section class="card shadow-sm">
+    <div class="card-body">
+        <h2 class="h5 fw-semibold mb-3">Quick guidelines</h2>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="border rounded p-3 h-100">
+                    <div class="fw-semibold">Best practices</div>
+                    <ul class="list-group list-group-flush mt-2">
+                        <li class="list-group-item">List fresh, unopened, or properly stored items</li>
+                        <li class="list-group-item">Include allergens and ingredients</li>
+                        <li class="list-group-item">Set a clear pickup window</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="border rounded p-3 h-100">
+                    <div class="fw-semibold">Avoid listing</div>
+                    <ul class="list-group list-group-flush mt-2">
+                        <li class="list-group-item">Expired or spoiled items</li>
+                        <li class="list-group-item">Food with unclear ingredients</li>
+                        <li class="list-group-item">Items without pickup instructions</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

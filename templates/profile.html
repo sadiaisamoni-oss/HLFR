@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile - Hyper-Local Food Rescue{% endblock %}
+
+{% block content %}
+<section class="card shadow-sm mb-4">
+    <div class="card-body">
+        <div class="d-flex flex-column flex-md-row align-items-md-center gap-4">
+            <div class="rounded-circle bg-success text-white d-inline-flex align-items-center justify-content-center p-4">
+                <span class="fs-1">👤</span>
+            </div>
+            <div class="flex-grow-1">
+                <h1 class="h4 fw-bold mb-1">Sarah Johnson</h1>
+                <div class="text-muted">Active Community Member</div>
+                <div class="text-muted small">Downtown District · Joined 8 months ago</div>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+                <a class="btn btn-success" href="{% url 'my_donations' %}">View Donations</a>
+                <a class="btn btn-outline-secondary" href="{% url 'list_food' %}">List Food</a>
+            </div>
+        </div>
+        <div class="row text-center mt-4">
+            <div class="col-6 col-md-3">
+                <div class="border rounded p-3 h-100">
+                    <div class="fs-4 fw-bold text-success">24</div>
+                    <div class="text-muted small">Items Shared</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="border rounded p-3 h-100">
+                    <div class="fs-4 fw-bold text-success">18</div>
+                    <div class="text-muted small">Items Received</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="border rounded p-3 h-100">
+                    <div class="fs-4 fw-bold text-success">42</div>
+                    <div class="text-muted small">Community Points</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="border rounded p-3 h-100">
+                    <div class="fs-4 fw-bold text-success">4.8</div>
+                    <div class="text-muted small">Rating</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="row g-4 mb-4">
+    <div class="col-lg-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h2 class="h5 fw-semibold">Badges</h2>
+                <div class="row g-3 mt-1">
+                    <div class="col-6">
+                        <div class="border rounded p-3 text-center h-100">
+                            <div class="fs-3">🌟</div>
+                            <div class="fw-semibold">Top Donor</div>
+                            <div class="text-muted small">50+ listings</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="border rounded p-3 text-center h-100">
+                            <div class="fs-3">🤝</div>
+                            <div class="fw-semibold">Community Hero</div>
+                            <div class="text-muted small">100 meals shared</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="border rounded p-3 text-center h-100">
+                            <div class="fs-3">♻️</div>
+                            <div class="fw-semibold">Waste Warrior</div>
+                            <div class="text-muted small">Monthly streak</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="border rounded p-3 text-center h-100">
+                            <div class="fs-3">🔒</div>
+                            <div class="fw-semibold">Next Badge</div>
+                            <div class="text-muted small">5 more donations</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h2 class="h5 fw-semibold">Recent Activity</h2>
+                <ul class="list-group list-group-flush mt-2">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Shared a bakery box</span>
+                        <span class="text-muted small">Today</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Claimed fresh produce</span>
+                        <span class="text-muted small">Yesterday</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Earned Waste Warrior badge</span>
+                        <span class="text-muted small">3 days ago</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="card shadow-sm">
+    <div class="card-body">
+        <h2 class="h5 fw-semibold">Achievements</h2>
+        <div class="mt-3">
+            <div class="d-flex justify-content-between">
+                <span>Monthly donor goal</span>
+                <span class="text-muted">70%</span>
+            </div>
+            <div class="progress mb-3" role="progressbar" aria-label="Monthly donor goal" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar bg-success w-75"></div>
+            </div>
+            <div class="d-flex justify-content-between">
+                <span>Community impact goal</span>
+                <span class="text-muted">45%</span>
+            </div>
+            <div class="progress" role="progressbar" aria-label="Community impact goal" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar bg-success w-50"></div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

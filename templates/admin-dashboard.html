@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard - Hyper-Local Food Rescue{% endblock %}
+
+{% block content %}
+<section class="mb-4">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <div>
+            <h1 class="h3 fw-bold mb-1">Admin Dashboard</h1>
+            <p class="text-muted mb-0">Real-time statistics and management tools.</p>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-outline-success" href="{% url 'home' %}">Back to Home</a>
+            <a class="btn btn-success" href="{% url 'list_food' %}">Create Listing</a>
+        </div>
+    </div>
+</section>
+
+<section class="row g-3 mb-4">
+    <div class="col-sm-6 col-lg-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-body text-center">
+                <div class="text-uppercase text-muted small">Total Users</div>
+                <div class="display-6 fw-bold text-success">324</div>
+                <div class="text-muted">Active community members</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-body text-center">
+                <div class="text-uppercase text-muted small">Food Rescued</div>
+                <div class="display-6 fw-bold text-success">1.2K</div>
+                <div class="text-muted">Items saved from waste</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-body text-center">
+                <div class="text-uppercase text-muted small">Active Posts</div>
+                <div class="display-6 fw-bold text-success">87</div>
+                <div class="text-muted">Current food listings</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-body text-center">
+                <div class="text-uppercase text-muted small">Community Impact</div>
+                <div class="display-6 fw-bold text-success">4.8K</div>
+                <div class="text-muted">Meals distributed</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="card shadow-sm">
+    <div class="card-body">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+            <h2 class="h5 fw-semibold mb-0">Recent Food Listings</h2>
+            <a class="btn btn-sm btn-outline-success" href="{% url 'available' %}">View All</a>
+        </div>
+        <div class="table-responsive mt-3">
+            <table class="table table-hover align-middle">
+                <thead class="table-success">
+                    <tr>
+                        <th>Food Item</th>
+                        <th>Donor</th>
+                        <th>Quantity</th>
+                        <th>Location</th>
+                        <th>Status</th>
+                        <th>Date Posted</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Fresh Vegetables</td>
+                        <td>Green Garden Market</td>
+                        <td>15 lbs</td>
+                        <td>Downtown</td>
+                        <td><span class="badge text-bg-success">Active</span></td>
+                        <td>2 hours ago</td>
+                        <td>
+                            <div class="btn-group btn-group-sm" role="group" aria-label="Listing actions">
+                                <button class="btn btn-outline-secondary" type="button">Edit</button>
+                                <button class="btn btn-outline-danger" type="button">Remove</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Bakery Boxes</td>
+                        <td>Sweet Treats Bakery</td>
+                        <td>8 boxes</td>
+                        <td>East Side</td>
+                        <td><span class="badge text-bg-success">Active</span></td>
+                        <td>5 hours ago</td>
+                        <td>
+                            <div class="btn-group btn-group-sm" role="group" aria-label="Listing actions">
+                                <button class="btn btn-outline-secondary" type="button">Edit</button>
+                                <button class="btn btn-outline-danger" type="button">Remove</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Prepared Meals</td>
+                        <td>Community Kitchen</td>
+                        <td>20 meals</td>
+                        <td>West End</td>
+                        <td><span class="badge text-bg-warning">Pending</span></td>
+                        <td>1 day ago</td>
+                        <td>
+                            <div class="btn-group btn-group-sm" role="group" aria-label="Listing actions">
+                                <button class="btn btn-outline-secondary" type="button">Edit</button>
+                                <button class="btn btn-outline-danger" type="button">Remove</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}

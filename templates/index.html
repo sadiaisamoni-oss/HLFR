@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Hyper-Local Food Rescue{% endblock %}
+
+{% block content %}
+<section class="p-5 mb-4 bg-success text-white rounded-3">
+    <div class="container-fluid py-2">
+        <h1 class="display-6 fw-bold">Hyper-Local Food Rescue Platform</h1>
+        <p class="col-md-8 fs-5">Share surplus food, discover nearby donations, and strengthen your community.</p>
+        <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-light btn-lg" href="{% url 'available' %}">Find Food</a>
+            <a class="btn btn-outline-light btn-lg" href="{% url 'list_food' %}">List Food</a>
+        </div>
+    </div>
+</section>
+
+<section class="mb-4">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h2 class="h5 fw-semibold">Save Surplus</h2>
+                    <p class="text-muted">List food before it goes to waste and connect with neighbors in minutes.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h2 class="h5 fw-semibold">Find Nearby Food</h2>
+                    <p class="text-muted">Browse verified listings with pickup details and availability windows.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h2 class="h5 fw-semibold">Build Community</h2>
+                    <p class="text-muted">Track impact, earn badges, and see your local rescue stats grow.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mb-4">
+    <div class="row g-4">
+        <div class="col-md-3">
+            <div class="card text-center border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="fs-3 fw-bold text-success">1.2k</div>
+                    <div class="text-muted">Items rescued</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="fs-3 fw-bold text-success">320</div>
+                    <div class="text-muted">Active donors</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="fs-3 fw-bold text-success">450</div>
+                    <div class="text-muted">Weekly pickups</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="fs-3 fw-bold text-success">98%</div>
+                    <div class="text-muted">Match success</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mb-4">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h2 class="h4 fw-semibold">How it works</h2>
+            <div class="row g-3 mt-1">
+                <div class="col-md-4">
+                    <div class="p-3 border rounded h-100">
+                        <div class="fw-semibold">1. Post a listing</div>
+                        <div class="text-muted">Add details, quantity, and pickup window.</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 border rounded h-100">
+                        <div class="fw-semibold">2. Confirm pickup</div>
+                        <div class="text-muted">Review requests and confirm the recipient.</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 border rounded h-100">
+                        <div class="fw-semibold">3. Track impact</div>
+                        <div class="text-muted">See your community points and rescue history.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="card border-success shadow-sm">
+        <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+            <div>
+                <h2 class="h4 fw-semibold">Ready to rescue food today?</h2>
+                <p class="text-muted mb-0">Join your neighbors and make a difference in your area.</p>
+            </div>
+            <div class="d-flex gap-2">
+                <a class="btn btn-success" href="{% url 'signup' %}">Create account</a>
+                <a class="btn btn-outline-success" href="{% url 'signin' %}">Sign in</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
