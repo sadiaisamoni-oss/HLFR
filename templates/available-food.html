@@ -10,32 +10,26 @@
 
 <section class="card shadow-sm mb-4">
     <div class="card-body">
-        <h2 class="h5 fw-semibold mb-3">Search and filter</h2>
-        <form class="row g-3">
-            <div class="col-md-4">
-                <label class="form-label" for="searchQuery">Keyword</label>
-                <input class="form-control" id="searchQuery" name="searchQuery" placeholder="e.g., vegetables, bakery" type="text">
+        <h2 class="h5 fw-semibold mb-3">Find Food</h2>
+        <form class="row g-3" method="get">
+            <div class="col-md-6">
+                <label class="form-label" for="searchQuery">Search keyword</label>
+                <input class="form-control" id="searchQuery" name="searchQuery" placeholder="e.g., vegetables, bread, rice" type="text" value="{{ searchQuery|default:'' }}">
+                <div class="form-text">Search by food name, location, or donor</div>
             </div>
             <div class="col-md-4">
-                <label class="form-label" for="category">Category</label>
+                <label class="form-label" for="category">Category (optional)</label>
                 <select class="form-select" id="category" name="category">
                     <option value="">All categories</option>
-                    <option value="produce">Fresh Produce</option>
-                    <option value="bakery">Bakery</option>
-                    <option value="prepared">Prepared Meals</option>
-                    <option value="dairy">Dairy and Eggs</option>
+                    <option value="produce" {% if category == 'produce' %}selected{% endif %}>Fresh Produce</option>
+                    <option value="bakery" {% if category == 'bakery' %}selected{% endif %}>Bakery</option>
+                    <option value="prepared" {% if category == 'prepared' %}selected{% endif %}>Prepared Meals</option>
+                    <option value="dairy" {% if category == 'dairy' %}selected{% endif %}>Dairy and Eggs</option>
                 </select>
             </div>
-            <div class="col-md-4">
-                <label class="form-label" for="distance">Distance</label>
-                <select class="form-select" id="distance" name="distance">
-                    <option value="5">Within 5 miles</option>
-                    <option value="10">Within 10 miles</option>
-                    <option value="25">Within 25 miles</option>
-                </select>
-            </div>
-            <div class="col-12">
-                <button class="btn btn-success" type="submit">Search</button>
+            <div class="col-md-2 d-flex align-items-end gap-2">
+                <button class="btn btn-success w-100" type="submit">Search</button>
+                <a class="btn btn-outline-secondary" href="{% url 'available' %}">Reset</a>
             </div>
         </form>
     </div>
@@ -43,73 +37,35 @@
 
 <section>
     <div class="row g-4">
+        {% for donation in data %}
         <div class="col-md-4">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
-                    <span class="badge text-bg-success">Verified</span>
-                    <h3 class="h5 mt-2">Fresh Vegetables</h3>
-                    <p class="text-muted mb-1"><strong>Quantity:</strong> 10 lbs mixed produce</p>
-                    <p class="text-muted mb-3"><strong>Pickup:</strong> Today, 4-6 PM</p>
-                    <a class="btn btn-outline-success w-100" href="{% url 'profile' %}">Request pickup</a>
+                    <span class="badge text-bg-success">Available</span>
+                    <h3 class="h5 mt-2">{{ donation.food_name }}</h3>
+                    <p class="text-muted mb-1"><strong>Quantity:</strong> {{ donation.quantity }}</p>
+                    <p class="text-muted mb-1"><strong>Location:</strong> {{ donation.location }}</p>
+                    <p class="text-muted mb-3"><strong>Donor:</strong> {{ donation.donor_name }}</p>
+                    {% if donation.requested_by_user %}
+                    <form method="post" action="{% url 'cancel_my_pickup' donation.user_request_id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                        <button class="btn btn-outline-danger w-100" type="submit">Cancel request</button>
+                    </form>
+                    {% else %}
+                    <form method="post" action="{% url 'request_pickup' donation.id %}">
+                        {% csrf_token %}
+                        <button class="btn btn-outline-success w-100" type="submit">Request pickup</button>
+                    </form>
+                    {% endif %}
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <span class="badge text-bg-warning">Pending</span>
-                    <h3 class="h5 mt-2">Bakery Boxes</h3>
-                    <p class="text-muted mb-1"><strong>Quantity:</strong> 6 boxes</p>
-                    <p class="text-muted mb-3"><strong>Pickup:</strong> Tomorrow, 9-11 AM</p>
-                    <a class="btn btn-outline-success w-100" href="{% url 'profile' %}">Request pickup</a>
-                </div>
-            </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info mb-0">No donations found in database.</div>
         </div>
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <span class="badge text-bg-success">Verified</span>
-                    <h3 class="h5 mt-2">Prepared Meals</h3>
-                    <p class="text-muted mb-1"><strong>Quantity:</strong> 12 meals</p>
-                    <p class="text-muted mb-3"><strong>Pickup:</strong> Today, 6-7 PM</p>
-                    <a class="btn btn-outline-success w-100" href="{% url 'profile' %}">Request pickup</a>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 </section>
 {% endblock %}
-
-        function displayBotMessage(text) {
-            const messagesContainer = document.getElementById('chatbot-messages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'message bot';
-            messageDiv.innerHTML = `<div class="message-bubble">${text}</div>`;
-            messagesContainer.appendChild(messageDiv);
-            scrollToBottom();
-        }
-
-        function showTypingAnimation() {
-            isTyping = true;
-            const messagesContainer = document.getElementById('chatbot-messages');
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'message bot';
-            typingDiv.id = 'typing-animation';
-            typingDiv.innerHTML = `<div class="typing-indicator"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>`;
-            messagesContainer.appendChild(typingDiv);
-            scrollToBottom();
-        }
-
-        function removeTypingAnimation() {
-            isTyping = false;
-            const typingDiv = document.getElementById('typing-animation');
-            if (typingDiv) {
-                typingDiv.remove();
-            }
-        }
-
-        function scrollToBottom() {
-            const messagesContainer = document.getElementById('chatbot-messages');
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-    </script>
