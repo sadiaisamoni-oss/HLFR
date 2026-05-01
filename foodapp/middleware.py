@@ -30,7 +30,7 @@ class LoginOnlyAccessMiddleware:
 
         static_path = '/' + settings.STATIC_URL.lstrip('/')
 
-        # Public URLs (login ছাড়াই ঢুকতে পারবে)
+        # Public URLs that don't require login
         public_paths = (
             signin_path,
             signup_path,

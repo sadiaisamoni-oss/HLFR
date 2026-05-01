@@ -23,4 +23,6 @@ urlpatterns = [
     path('admin-panel/confirm/<int:donation_id>/', views.confirm_pickup_request, name='confirm_pickup'),
     path('admin-panel/cancel/<int:donation_id>/', views.cancel_pickup_request, name='cancel_pickup'),
     path('profile/', views.profile, name='profile'),
+    path('api/chatbot/', views.chatbot_api, name='chatbot_api'),
+    path('api/chatbot/llm/', views.chatbot_llm_api, name='chatbot_llm_api'),
 ]

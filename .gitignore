@@ -15,7 +15,13 @@ env/
 db.sqlite3
 db.sqlite3-journal
 /static/
+/staticfiles/
 /media/
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
 
 # IDE
 .vscode/
@@ -23,10 +29,35 @@ db.sqlite3-journal
 *.swp
 *.swo
 *~
+*.sublime-project
+*.sublime-workspace
 
 # OS
 .DS_Store
 Thumbs.db
+
+# Testing
+.coverage
+.pytest_cache/
+htmlcov/
+
+# Misc
+*.egg-info/
+dist/
+build/
+.tox/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Generated files
+secrets.py
+
 
 # Environment variables
 .env

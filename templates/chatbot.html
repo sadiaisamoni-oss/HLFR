@@ -292,8 +292,7 @@
             <button class="quick-question-btn" onclick="handleQuickQuestion('How can I donate food?')">How can I donate food?</button>
             <button class="quick-question-btn" onclick="handleQuickQuestion('How do I find food near me?')">How do I find food near me?</button>
             <button class="quick-question-btn" onclick="handleQuickQuestion('What are the food safety rules?')">What are the food safety rules?</button>
-            <button class="quick-question-btn" onclick="handleQuickQuestion('How does the app work?')">How does the app work?</button>
-            <button class="quick-question-btn" onclick="handleQuickQuestion('Is it really free?')">Is it really free?</button>
+            
         </div>
         
         <div class="chatbot-input-area">
@@ -304,22 +303,37 @@
 </div>
 
 <script>
-// Pre-defined smart responses
-const aiResponses = {
-    'How can I donate food?': 'Great question! 🍎 To donate food:\n1. Click "List Food" from the menu\n2. Fill in food details (type, quantity, pickup time)\n3. Save and share with the community\n4. Track your donations and earn badges!',
-
-    'How do I find food near me?': 'Easy! 📍 Just:\n1. Go to "Browse Food"\n2. Use the search bar or Quick Filters\n3. Filter by distance, food type, or ratings\n4. Click "Claim Food" and message the donor\n5. Arrange pickup at a convenient time!',
-
-    'What are the food safety rules?': 'Safety first! ✅ Always:\n• Check expiration dates\n• Inspect for damage or contamination\n• Store perishables immediately\n• Follow food handling procedures\n• Ask donors about storage details\n• Trust verified donors with high ratings',
-
-    'How does the app work?': 'Our platform is simple! 🌟\n• Donors list surplus food\n• Community members find and claim items\n• Direct messaging for coordination\n• Track donations and earn badges\n• Build community trust together',
-
-    'Is it really free?': 'Yes! 100% free! 🎉\n• No hidden fees\n• No membership costs\n• No delivery charges\n• Free for donating and claiming\n• Completely community-driven\nJust giving and sharing food!',
-
-    'default': 'That\'s a great question! 💚 Our team is always working to improve the platform. For more detailed information, please visit our FAQ page or contact our support team. How else can I help you?'
-};
-
 let isTyping = false;
+
+// Send a message to the backend chatbot API and display the response
+async function sendChatbotRequest(message) {
+    try {
+        const res = await fetch('/api/chatbot/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({ message }),
+        });
+
+        removeTypingAnimation();
+        if (!res.ok) {
+            displayBotMessage("Sorry, I couldn't reach the server. Try again later.");
+            return;
+        }
+        const data = await res.json();
+        if (data && data.reply) {
+            displayBotMessage(data.reply);
+        } else {
+            displayBotMessage("Sorry, I didn't understand that.");
+        }
+    } catch (err) {
+        console.error('Chatbot request failed', err);
+        removeTypingAnimation();
+        displayBotMessage('Sorry, something went wrong. Please try again later.');
+    }
+}
 
 function toggleChatbot() {
     const windowEl = document.getElementById('chatbot-window');
@@ -361,13 +375,8 @@ function handleKeyPress(event) {
 function handleQuickQuestion(question) {
     displayUserMessage(question);
     showTypingAnimation();
-
-    setTimeout(() => {
-        removeTypingAnimation();
-        const response = aiResponses[question] || aiResponses['default'];
-        displayBotMessage(response);
-        scrollToBottom();
-    }, 1500);
+    // use backend for quick questions too
+    sendChatbotRequest(question);
 }
 
 function sendMessage() {
@@ -384,13 +393,23 @@ function sendMessage() {
     }
 
     showTypingAnimation();
+    sendChatbotRequest(message);
+}
 
-    setTimeout(() => {
-        removeTypingAnimation();
-        const response = aiResponses['default'];
-        displayBotMessage(response);
-        scrollToBottom();
-    }, 1500);
+// CSRF helper
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }
 
 function displayUserMessage(text) {

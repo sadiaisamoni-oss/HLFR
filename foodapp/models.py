@@ -24,6 +24,8 @@ class Donation(models.Model):
     donor_name = models.CharField(max_length=120, default='Manual Entry')
     is_mine = models.BooleanField(default=False)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    image = models.ImageField(upload_to='donations/%Y/%m/%d/', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return self.food_name
@@ -50,3 +52,17 @@ class Badge(models.Model):
 
     def __str__(self):
         return f'{self.title} ({self.threshold}+)'
+
+
+class UserBadge(models.Model):
+    """Track which user has earned which badge"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='earned_badges')
+    badge = models.ForeignKey(Badge, on_delete=models.CASCADE)
+    earned_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'badge')
+        ordering = ['-earned_at']
+
+    def __str__(self):
+        return f'{self.user.username} - {self.badge.title}'

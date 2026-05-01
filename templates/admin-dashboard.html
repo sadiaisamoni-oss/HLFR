@@ -118,15 +118,15 @@
                         </td>
                         <td>
                             {% if can_manage %}
-                                {% if donation.is_mine == False and donation.status == 'pending' %}
-                                <div class="d-flex gap-1">
-                                    <form method="post" action="{% url 'confirm_pickup' donation.id %}" style="display: inline;">
+                                {% if donation.status == 'pending' %}
+                                <div class="d-flex gap-1 action-cell" data-donation-row="{{ donation.id }}">
+                                    <form class="js-admin-action" method="post" action="{% url 'confirm_pickup' donation.id %}" style="display: inline;" data-action-kind="confirm" data-donation-id="{{ donation.id }}">
                                         {% csrf_token %}
-                                        <button type="submit" class="btn btn-sm btn-success" title="Confirm this pickup request">✓</button>
+                                        <button type="submit" class="btn btn-sm btn-success" title="Confirm this pickup request" aria-label="Confirm this pickup request">Confirm</button>
                                     </form>
-                                    <form method="post" action="{% url 'cancel_pickup' donation.id %}" style="display: inline;">
+                                    <form class="js-admin-action" method="post" action="{% url 'cancel_pickup' donation.id %}" style="display: inline;" data-action-kind="cancel" data-donation-id="{{ donation.id }}">
                                         {% csrf_token %}
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Cancel this pickup request">✕</button>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Cancel this pickup request" aria-label="Cancel this pickup request">&times;</button>
                                     </form>
                                 </div>
                                 {% else %}
@@ -191,8 +191,89 @@
 {% if can_manage %}
 <script>
     (function () {
+        const actionForms = Array.from(document.querySelectorAll('.js-admin-action'));
         const selectAll = document.getElementById('selectAllDonations');
         const checkboxes = Array.from(document.querySelectorAll('.donation-checkbox'));
+
+        actionForms.forEach(function (form) {
+            form.addEventListener('submit', async function (event) {
+                event.preventDefault();
+
+                const actionKind = form.dataset.actionKind;
+                const donationId = form.dataset.donationId;
+                const csrfToken = form.querySelector('input[name="csrfmiddlewaretoken"]').value;
+                const confirmButton = form.querySelector('button[type="submit"]');
+                const actionCell = form.closest('td');
+                const row = form.closest('tr');
+
+                if (confirmButton) {
+                    confirmButton.disabled = true;
+                }
+
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRFToken': form.querySelector('input[name="csrfmiddlewaretoken"]').value,
+                        },
+                        body: new FormData(form),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Request failed');
+                    }
+
+                    const data = await response.json();
+                    if (!data.success) {
+                        throw new Error(data.message || 'Action failed');
+                    }
+
+                    const statusBadge = row ? row.querySelector('td:nth-child(7) .badge') : null;
+
+                    if (statusBadge) {
+                        if (actionKind === 'confirm') {
+                            statusBadge.textContent = 'Confirmed';
+                            statusBadge.className = 'badge bg-success';
+                        } else if (actionKind === 'cancel') {
+                            statusBadge.textContent = 'Cancelled';
+                            statusBadge.className = 'badge bg-danger';
+                        }
+                    }
+
+                    if (actionCell) {
+                        actionCell.innerHTML = '<form method="post" action="/admin-panel/delete/' + donationId + '/" onsubmit="return confirm(\'Delete this listing?\');" style="display: inline;">' +
+                            '<input type="hidden" name="csrfmiddlewaretoken" value="' + csrfToken + '">' +
+                            '<button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>' +
+                            '</form>';
+                    }
+
+                    if (typeof data.message === 'string' && data.message.length > 0) {
+                        const existingAlert = document.createElement('div');
+                        existingAlert.className = 'alert alert-success alert-dismissible fade show mt-3';
+                        existingAlert.role = 'alert';
+                        existingAlert.textContent = data.message;
+                        const closeButton = document.createElement('button');
+                        closeButton.type = 'button';
+                        closeButton.className = 'btn-close';
+                        closeButton.setAttribute('data-bs-dismiss', 'alert');
+                        closeButton.setAttribute('aria-label', 'Close');
+                        existingAlert.appendChild(closeButton);
+                        const cardBody = document.querySelector('section.card.shadow-sm .card-body');
+                        if (cardBody) {
+                            cardBody.prepend(existingAlert);
+                        }
+                    }
+                } catch (error) {
+                    alert('Action failed. Please try again.');
+                } finally {
+                    if (confirmButton) {
+                        confirmButton.disabled = false;
+                    }
+                }
+            });
+        });
+
         if (!selectAll || checkboxes.length === 0) {
             return;
         }
